@@ -36,24 +36,24 @@ function runSuite(name, path) {
 const { execSync } = require('child_process');
 
 const SUITES = [
-  { name: 'Pythagorean / Western',     path: 'pythagorean/pythagorean.test.js' },
-  { name: 'Hebrew Gematria',           path: 'hebrew-gematria/hebrew-gematria.test.js' },
-  { name: 'Chaldean',                  path: 'chaldean/chaldean.test.js' },
-  { name: 'Vedic / Indian',            path: 'vedic-indian/vedic-indian.test.js' },
-  { name: 'Greek Isopsephy',           path: 'greek-isopsephy/greek-isopsephy.test.js' },
-  { name: 'Arabic Abjad',              path: 'arabic-abjad/arabic-abjad.test.js' },
-  { name: 'Hurufism',                  path: 'hurufism/hurufism.test.js' },
-  { name: 'Thelemic',                  path: 'thelemic/thelemic.test.js' },
-  { name: 'Tarot',                     path: 'tarot/tarot.test.js' },
-  { name: 'Chinese Cosmological',      path: 'chinese-cosmological/chinese-cosmological.test.js' },
-  { name: 'Japanese / Shinto',         path: 'japanese-shinto/japanese-shinto.test.js' },
-  { name: 'Mayan',                     path: 'mayan/mayan.test.js' },
-  { name: 'Yoruba / Ifá',              path: 'yoruba-ifa/yoruba-ifa.test.js' },
-  { name: 'Norse / Runic',             path: 'norse-runic/norse-runic.test.js' },
-  { name: 'Celtic / Ogham',            path: 'celtic-ogham/celtic-ogham.test.js' },
-  { name: 'Neoplatonic',               path: 'neoplatonic/neoplatonic.test.js' },
-  { name: 'Christian Symbolic',        path: 'christian-symbolic/christian-symbolic.test.js' },
-  { name: 'Egyptian',                  path: 'egyptian/egyptian.test.js' },
+  { name: 'Pythagorean / Western',     path: 'systems/pythagorean/pythagorean.test.js' },
+  { name: 'Hebrew Gematria',           path: 'systems/hebrew-gematria/hebrew-gematria.test.js' },
+  { name: 'Chaldean',                  path: 'systems/chaldean/chaldean.test.js' },
+  { name: 'Vedic / Indian',            path: 'systems/vedic-indian/vedic-indian.test.js' },
+  { name: 'Greek Isopsephy',           path: 'systems/greek-isopsephy/greek-isopsephy.test.js' },
+  { name: 'Arabic Abjad',              path: 'systems/arabic-abjad/arabic-abjad.test.js' },
+  { name: 'Hurufism',                  path: 'systems/hurufism/hurufism.test.js' },
+  { name: 'Thelemic',                  path: 'systems/thelemic/thelemic.test.js' },
+  { name: 'Tarot',                     path: 'systems/tarot/tarot.test.js' },
+  { name: 'Chinese Cosmological',      path: 'systems/chinese-cosmological/chinese-cosmological.test.js' },
+  { name: 'Japanese / Shinto',         path: 'systems/japanese-shinto/japanese-shinto.test.js' },
+  { name: 'Mayan',                     path: 'systems/mayan/mayan.test.js' },
+  { name: 'Yoruba / Ifá',              path: 'systems/yoruba-ifa/yoruba-ifa.test.js' },
+  { name: 'Norse / Runic',             path: 'systems/norse-runic/norse-runic.test.js' },
+  { name: 'Celtic / Ogham',            path: 'systems/celtic-ogham/celtic-ogham.test.js' },
+  { name: 'Neoplatonic',               path: 'systems/neoplatonic/neoplatonic.test.js' },
+  { name: 'Christian Symbolic',        path: 'systems/christian-symbolic/christian-symbolic.test.js' },
+  { name: 'Egyptian',                  path: 'systems/egyptian/egyptian.test.js' },
 ];
 
 console.log('\n╔══════════════════════════════════════════════════════════╗');
@@ -130,17 +130,17 @@ function assertEqual(a, b, msg) {
 }
 
 // Load modules for cross-verification
-const HebrewGematria = require('./hebrew-gematria/hebrew-gematria');
-const GreekIsopsephy = require('./greek-isopsephy/greek-isopsephy');
-const ArabicAbjad = require('./arabic-abjad/arabic-abjad');
-const Thelemic = require('./thelemic/thelemic');
-const Chaldean = require('./chaldean/chaldean');
-const VedicIndian = require('./vedic-indian/vedic-indian');
-const Neoplatonic = require('./neoplatonic/neoplatonic');
-const ChristianSymbolic = require('./christian-symbolic/christian-symbolic');
-const Mayan = require('./mayan/mayan');
-const YorubaIfa = require('./yoruba-ifa/yoruba-ifa');
-const ChineseCosmological = require('./chinese-cosmological/chinese-cosmological');
+const HebrewGematria = require('./systems/hebrew-gematria/hebrew-gematria');
+const GreekIsopsephy = require('./systems/greek-isopsephy/greek-isopsephy');
+const ArabicAbjad = require('./systems/arabic-abjad/arabic-abjad');
+const Thelemic = require('./systems/thelemic/thelemic');
+const Chaldean = require('./systems/chaldean/chaldean');
+const VedicIndian = require('./systems/vedic-indian/vedic-indian');
+const Neoplatonic = require('./systems/neoplatonic/neoplatonic');
+const ChristianSymbolic = require('./systems/christian-symbolic/christian-symbolic');
+const Mayan = require('./systems/mayan/mayan');
+const YorubaIfa = require('./systems/yoruba-ifa/yoruba-ifa');
+const ChineseCosmological = require('./systems/chinese-cosmological/chinese-cosmological');
 
 // 1. Thelema = Agape = 93
 crossTest('Thelema = Agape = 93 (Greek Isopsephy + Thelemic)', () => {
