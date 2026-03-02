@@ -3,15 +3,32 @@ import { useApp } from '../../stores/app-store'
 import registry, { SYSTEM_COLORS } from '../../utils/system-registry'
 import { C, fonts } from '../../utils/theme'
 import GlassCard from '../../components/GlassCard'
+import { computeInsights, computeSystemResonance } from '../../utils/insights-engine'
+
+const INSIGHT_COLORS = {
+  cyan: C.cyan,
+  green: C.green,
+  gold: C.gold,
+  purple: C.purple,
+}
+
+const INSIGHT_LABELS = {
+  frequency: 'Frequency',
+  streak: 'Pattern',
+  master: 'Master Number',
+  karmic: 'Karmic Debt',
+  convergence: 'Convergence',
+  resonance: 'Resonance',
+  temporal: 'Temporal Cycle',
+}
 
 export default function InsightsScreen() {
   const { state } = useApp()
   const evaluations = state.evaluations
   const isPremium = state.user.tier === 'premium'
 
-  const insights = useMemo(() => {
-    return computeInsights(evaluations, isPremium)
-  }, [evaluations, isPremium])
+  const insights = useMemo(() => computeInsights(evaluations, isPremium), [evaluations, isPremium])
+  const resonance = useMemo(() => isPremium ? computeSystemResonance(evaluations) : null, [evaluations, isPremium])
 
   return (
     <div style={{ padding: '20px 16px 80px', maxWidth: 600, margin: '0 auto' }}>
@@ -42,19 +59,63 @@ export default function InsightsScreen() {
           {/* Number frequency chart */}
           <FrequencyChart evaluations={evaluations} />
 
+          {/* System resonance (Premium) */}
+          {isPremium && resonance?.top.length > 0 && (
+            <GlassCard glow="purple" style={{ borderColor: `${C.purple}15` }}>
+              <div style={{
+                fontFamily: fonts.mono, fontSize: 9, color: C.purple,
+                letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 10,
+              }}>
+                System Resonance
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                {resonance.top.map(sys => {
+                  const maxScore = resonance.top[0]?.score || 1
+                  const barWidth = (sys.score / maxScore) * 100
+                  return (
+                    <div key={sys.systemId} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{
+                        width: 6, height: 6, borderRadius: '50%',
+                        background: SYSTEM_COLORS[sys.systemId],
+                        flexShrink: 0,
+                      }} />
+                      <span style={{
+                        fontFamily: fonts.serif, fontSize: 12, color: C.textBright,
+                        width: 100, flexShrink: 0,
+                      }}>
+                        {sys.name}
+                      </span>
+                      <div style={{ flex: 1, height: 4, background: 'rgba(20, 16, 30, 0.5)', borderRadius: 2 }}>
+                        <div style={{
+                          width: `${barWidth}%`, height: '100%',
+                          background: SYSTEM_COLORS[sys.systemId],
+                          borderRadius: 2, transition: 'width 0.3s',
+                        }} />
+                      </div>
+                      <span style={{
+                        fontFamily: fonts.mono, fontSize: 9, color: C.textMuted,
+                        width: 20, textAlign: 'right',
+                      }}>
+                        {sys.evaluations}
+                      </span>
+                    </div>
+                  )
+                })}
+              </div>
+            </GlassCard>
+          )}
+
           {/* Insight cards */}
           {insights.map((insight, i) => (
-            <InsightCard key={i} insight={insight} isPremium={isPremium} />
+            <InsightCard key={i} insight={insight} />
           ))}
 
-          {/* Premium teasers */}
+          {/* Premium teasers for Basic */}
           {!isPremium && (
             <>
               <GlassCard style={{
                 borderColor: `${C.purple}15`,
                 padding: '16px 20px',
-                position: 'relative',
-                overflow: 'hidden',
               }}>
                 <div style={{
                   fontFamily: fonts.mono, fontSize: 9, color: C.purple,
@@ -67,14 +128,13 @@ export default function InsightsScreen() {
                   filter: 'blur(3px)', lineHeight: 1.6,
                 }}>
                   Track which traditions resonate most with your inquiries over time.
-                  Premium insight analyzes usage, drill-downs, stars, and view time.
+                  Premium analyzes usage, drill-downs, stars, and view time.
                 </div>
               </GlassCard>
 
               <GlassCard style={{
                 borderColor: `${C.gold}15`,
                 padding: '16px 20px',
-                position: 'relative',
               }}>
                 <div style={{
                   fontFamily: fonts.mono, fontSize: 9, color: C.goldDim,
@@ -86,8 +146,8 @@ export default function InsightsScreen() {
                   fontFamily: fonts.serif, fontSize: 13, color: C.textDim,
                   filter: 'blur(3px)', lineHeight: 1.6,
                 }}>
-                  Discover when three or more traditions produce the same primary number
-                  for your input — a strong signal across independent systems.
+                  Discover when three or more traditions produce the same primary
+                  number — a strong signal across independent systems.
                 </div>
               </GlassCard>
             </>
@@ -105,8 +165,7 @@ function FrequencyChart({ evaluations }) {
       if (!e.results) continue
       for (const r of e.results) {
         if (!r.result) continue
-        // Extract numbers from results
-        const nums = extractNumbers(r.result)
+        const nums = extractAllNums(r.result)
         for (const n of nums) {
           if (n >= 1 && n <= 9) {
             counts[n] = (counts[n] || 0) + 1
@@ -158,100 +217,36 @@ function FrequencyChart({ evaluations }) {
   )
 }
 
-function extractNumbers(result) {
+function extractAllNums(result) {
   const nums = []
-  const extract = (obj) => {
-    if (typeof obj === 'number' && obj > 0 && obj < 100) nums.push(obj)
-    if (typeof obj === 'object' && obj) {
-      for (const key of ['value', 'reduced', 'final', 'lifePath', 'expression', 'soulUrge', 'personality']) {
-        if (obj[key]?.value !== undefined) nums.push(obj[key].value)
-        else if (typeof obj[key] === 'number') nums.push(obj[key])
-      }
-    }
+  if (!result) return nums
+  const fields = ['lifePath', 'expression', 'soulUrge', 'personality', 'psychicNumber', 'destinyNumber', 'nameNumber', 'birthCard', 'yearCard', 'nameVibration', 'birthNumber']
+  for (const f of fields) {
+    if (result[f]?.value !== undefined && typeof result[f].value === 'number') nums.push(result[f].value)
   }
-  extract(result)
+  if (typeof result.standard === 'number') nums.push(result.standard)
+  if (typeof result.reduced === 'number') nums.push(result.reduced)
+  if (typeof result.value === 'number') nums.push(result.value)
+  if (typeof result.sum === 'number') nums.push(result.sum)
   return nums
 }
 
-function computeInsights(evaluations, isPremium) {
-  const insights = []
+function InsightCard({ insight }) {
+  const color = INSIGHT_COLORS[insight.color] || C.textDim
+  const label = INSIGHT_LABELS[insight.type] || insight.type
 
-  if (evaluations.length < 2) return insights
-
-  // Streak detection
-  const recentValues = []
-  for (const e of evaluations.slice(0, 10)) {
-    if (!e.results) continue
-    for (const r of e.results) {
-      const nums = extractNumbers(r.result)
-      recentValues.push(...nums.filter(n => n >= 1 && n <= 9))
-    }
-  }
-
-  const valueCounts = {}
-  for (const v of recentValues) {
-    valueCounts[v] = (valueCounts[v] || 0) + 1
-  }
-
-  // Most frequent
-  const sorted = Object.entries(valueCounts).sort((a, b) => b[1] - a[1])
-  if (sorted.length > 0 && sorted[0][1] >= 3) {
-    insights.push({
-      type: 'streak',
-      color: C.green,
-      title: `${sorted[0][0]} appears ${sorted[0][1]} times`,
-      body: `The number ${sorted[0][0]} is recurring across your recent evaluations. This may indicate a dominant theme.`,
-    })
-  }
-
-  // Master Number detection
-  for (const e of evaluations.slice(0, 5)) {
-    if (!e.results) continue
-    for (const r of e.results) {
-      const result = r.result
-      if (result?.lifePath?.value && [11, 22, 33].includes(result.lifePath.value)) {
-        insights.push({
-          type: 'master',
-          color: C.gold,
-          title: `Master Number ${result.lifePath.value} detected`,
-          body: `Your Life Path contains Master Number ${result.lifePath.value}. This carries heightened potential and responsibility.`,
-        })
-        break
-      }
-    }
-  }
-
-  // System diversity
-  const systemsUsed = new Set()
-  for (const e of evaluations) {
-    if (e.systems) e.systems.forEach(s => systemsUsed.add(s))
-    if (e.primarySystem) systemsUsed.add(e.primarySystem)
-  }
-
-  if (systemsUsed.size >= 5) {
-    insights.push({
-      type: 'frequency',
-      color: C.cyan,
-      title: `${systemsUsed.size} systems explored`,
-      body: `You've worked with ${systemsUsed.size} of 18 available traditions. Each offers a unique lens on the same inquiry.`,
-    })
-  }
-
-  return insights
-}
-
-function InsightCard({ insight, isPremium }) {
   return (
     <GlassCard style={{
-      borderLeft: `3px solid ${insight.color}`,
-      borderColor: `${insight.color}20`,
+      borderLeft: `3px solid ${color}`,
+      borderColor: `${color}20`,
       padding: '14px 16px',
     }}>
       <div style={{
-        fontFamily: fonts.mono, fontSize: 9, color: insight.color,
+        fontFamily: fonts.mono, fontSize: 9, color,
         letterSpacing: '1px', textTransform: 'uppercase', marginBottom: 6,
       }}>
-        {insight.type === 'streak' ? 'Pattern' : insight.type === 'master' ? 'Alert' : 'Frequency'}
+        {label}
+        {insight.tier === 'premium' && ' ⟡'}
       </div>
       <div style={{
         fontFamily: fonts.serif, fontSize: 14, color: C.textBright, marginBottom: 4,
