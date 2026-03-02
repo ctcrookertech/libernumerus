@@ -4,6 +4,7 @@ import { C, fonts } from '../../utils/theme'
 import GlassCard from '../../components/GlassCard'
 import VortexRing from '../../components/VortexRing'
 import DrillDownModal from '../../components/DrillDownModal'
+import ConstellationView from '../../components/ConstellationView'
 
 /**
  * Extract displayable result items from a system's analyze() output.
@@ -195,9 +196,25 @@ export default function ResultsView({ evaluation, isPremium }) {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      {/* Premium: Constellation view */}
+      {isPremium && successResults.length > 1 && (
+        <ConstellationView
+          results={successResults}
+          onNodeClick={(systemId) => {
+            const el = document.getElementById(`system-${systemId}`)
+            el?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }}
+        />
+      )}
+
       {/* Premium convergence summary */}
       {isPremium && successResults.length > 1 && (
         <ConvergenceSummary results={successResults} />
+      )}
+
+      {/* Synthesis Cards (Premium) */}
+      {isPremium && successResults.length > 1 && (
+        <SynthesisCards results={successResults} />
       )}
 
       {successResults.map(({ systemId, result }) => {
@@ -210,7 +227,7 @@ export default function ResultsView({ evaluation, isPremium }) {
         const secondary = items.filter(i => !i.primary)
 
         return (
-          <div key={systemId}>
+          <div key={systemId} id={`system-${systemId}`}>
             {/* System header */}
             <div style={{
               display: 'flex',
@@ -376,6 +393,108 @@ export default function ResultsView({ evaluation, isPremium }) {
         />
       )}
     </div>
+  )
+}
+
+function SynthesisCards({ results }) {
+  const cards = []
+
+  // Build number→systems map
+  const numberMap = {}
+  const meaningMap = {}
+  for (const { systemId, result } of results) {
+    const items = extractResults(systemId, result)
+    for (const item of items) {
+      if (typeof item.value === 'number' && item.value >= 1 && item.value <= 99) {
+        if (!numberMap[item.value]) numberMap[item.value] = []
+        numberMap[item.value].push({ systemId, label: item.label })
+
+        // Get meanings for thematic bridging
+        const meaning = getMeaning(systemId, item.value)
+        if (meaning) {
+          if (!meaningMap[item.value]) meaningMap[item.value] = []
+          meaningMap[item.value].push({ systemId, meaning })
+        }
+      }
+    }
+  }
+
+  // Correspondence: shared planetary/elemental attributions
+  const planetMap = {}
+  for (const { systemId, result } of results) {
+    const planet = result.planet?.name || result.psychicNumber?.planet?.name ||
+      result.nameVibration?.planet?.name || result.birthNumber?.planet?.name
+    if (planet) {
+      if (!planetMap[planet]) planetMap[planet] = []
+      planetMap[planet].push(systemId)
+    }
+  }
+
+  for (const [planet, systems] of Object.entries(planetMap)) {
+    if (systems.length >= 2) {
+      cards.push({
+        type: 'correspondence',
+        color: C.purple,
+        label: 'Correspondence',
+        text: `${systems.map(id => registry.get(id)?.name).join(' and ')} share planetary ruler ${planet}`,
+      })
+    }
+  }
+
+  // Thematic bridge: find meaning keywords that overlap across systems
+  for (const [num, meanings] of Object.entries(meaningMap)) {
+    if (meanings.length >= 2) {
+      const keywords = new Set()
+      for (const { meaning } of meanings) {
+        const kws = meaning.keywords
+        if (typeof kws === 'string') kws.split(',').forEach(k => keywords.add(k.trim().toLowerCase()))
+        else if (Array.isArray(kws)) kws.forEach(k => keywords.add(k.toLowerCase()))
+      }
+      if (keywords.size > 0) {
+        const sysList = meanings.map(m => registry.get(m.systemId)?.name).join(', ')
+        const kwList = Array.from(keywords).slice(0, 4).join(', ')
+        if (meanings.length >= 2) {
+          cards.push({
+            type: 'thematic',
+            color: C.green,
+            label: 'Thematic Bridge',
+            text: `${num} carries themes of ${kwList} across ${sysList}`,
+          })
+        }
+      }
+    }
+  }
+
+  if (cards.length === 0) return null
+
+  return (
+    <>
+      {cards.slice(0, 3).map((card, i) => (
+        <GlassCard key={i} style={{
+          borderLeft: `3px solid ${card.color}`,
+          borderColor: `${card.color}20`,
+        }}>
+          <div style={{
+            fontFamily: fonts.mono,
+            fontSize: 9,
+            color: card.color,
+            letterSpacing: '1px',
+            textTransform: 'uppercase',
+            marginBottom: 4,
+          }}>
+            {card.label}
+          </div>
+          <div style={{
+            fontFamily: fonts.serif,
+            fontSize: 13,
+            color: C.textBright,
+            lineHeight: 1.6,
+          }}>
+            {card.text}
+          </div>
+        </GlassCard>
+      ))}
+    </>
   )
 }
 
