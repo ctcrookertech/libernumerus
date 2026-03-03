@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Celtic Ogham
+ * Liber Numerus — Celtic Ogham
  * 20 Ogham letters (4 aicme x 5), forfeda, Graves' tree calendar,
  * name analysis, divination draws, triad lookup
  */

@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Tarot Numerology
+ * Liber Numerus — Tarot Numerology
  * Birth Cards, Hebrew letter correspondences, Major/Minor Arcana,
  * tradition-specific variations
  */

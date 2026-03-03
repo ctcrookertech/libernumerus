@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Arabic Abjad / Ilm al-Huruf
+ * Liber Numerus — Arabic Abjad / Ilm al-Huruf
  * Abjad values, Hisab al-Saghir, Chronograms, Elemental/Planetary attributions
  */
 const UnicodeUtils = (typeof require !== 'undefined') ? require('../../shared/unicode-utils') : window.UnicodeUtils;

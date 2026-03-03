@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Master Test Runner
+ * Liber Numerus — Master Test Runner
  * Executes all 18 system test suites + shared utility tests + cross-system verification
  */
 

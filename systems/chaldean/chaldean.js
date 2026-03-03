@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Chaldean Numerology
+ * Liber Numerus — Chaldean Numerology
  * Non-sequential letter mapping, compound numbers 10-52, planetary attributions
  */
 const ReductionUtils = (typeof require !== 'undefined') ? require('../../shared/reduction-utils') : window.ReductionUtils;

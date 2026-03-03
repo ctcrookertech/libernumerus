@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Chinese Cosmological Numerology
+ * Liber Numerus — Chinese Cosmological Numerology
  * Phonetic homophony, Yin/Yang, Wuxing (Five Phases), Luo Shu magic square,
  * I Ching trigrams/hexagrams, auspiciousness scoring
  */

@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Christian Symbolic Numerology
+ * Liber Numerus — Christian Symbolic Numerology
  * Biblical number meanings, Augustinian factorization, typological pairs,
  * Latin isopsephy, Revelation number analysis
  */

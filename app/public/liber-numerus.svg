@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <!-- Inverted pentagon -->
+  <polygon points="12,22.5 22.0,16.0 19.4,4.0 4.6,4.0 2.0,16.0" fill="none" stroke="#f5e6be" stroke-width="1" opacity="0.9"/>
+  <!-- 8-pointed star: two overlapping squares -->
+  <rect x="6.5" y="6.5" width="11" height="11" fill="none" stroke="#f5e6be" stroke-width="0.8" opacity="0.9"/>
+  <rect x="6.5" y="6.5" width="11" height="11" fill="none" stroke="#f5e6be" stroke-width="0.8" opacity="0.9" transform="rotate(45 12 12)"/>
+  <!-- Center equilateral triangle -->
+  <polygon points="12,7 16.33,14.5 7.67,14.5" fill="#f5e6be" fill-opacity="0.2" stroke="#f5e6be" stroke-width="0.7" opacity="0.9"/>
+</svg>

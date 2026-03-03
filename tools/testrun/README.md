@@ -1,6 +1,6 @@
 # testrun — E2E Test Runner Specification
 
-End-to-end browser test suite for the Libernumerus web app, built in Go using the [drivecdp](https://microsoft.ghe.com/ccrook/drivecdp) Chrome DevTools Protocol framework.
+End-to-end browser test suite for the Liber Numerus web app, built in Go using the [drivecdp](https://microsoft.ghe.com/ccrook/drivecdp) Chrome DevTools Protocol framework.
 
 ## Architecture
 

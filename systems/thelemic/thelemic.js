@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Thelemic Numerology
+ * Liber Numerus — Thelemic Numerology
  * Delegates Hebrew gematria and Greek isopsephy, English Qabalah ciphers,
  * Tree of Life, 93 Current, Notariqon, Temurah
  */

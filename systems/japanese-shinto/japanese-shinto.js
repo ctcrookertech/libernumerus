@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Japanese / Shinto Numerology
+ * Liber Numerus — Japanese / Shinto Numerology
  * Seimei Handan (name-stroke numerology), Rokuyo day cycle,
  * phonetic digit associations, gift amount evaluation, kanji stroke lookup
  */

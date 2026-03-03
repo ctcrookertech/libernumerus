@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Hebrew Gematria
+ * Liber Numerus — Hebrew Gematria
  * Standard, Small, Gadol, Kolel, Ordinal, AIQ BKR methods
  */
 const UnicodeUtils = (typeof require !== 'undefined') ? require('../../shared/unicode-utils') : window.UnicodeUtils;

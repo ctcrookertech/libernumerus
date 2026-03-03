@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Hurufism
+ * Liber Numerus — Hurufism
  * Extends Arabic Abjad with facial line mapping, prophetic cycles, body mapping
  */
 const ArabicAbjad = (typeof require !== 'undefined') ? require('../arabic-abjad/arabic-abjad') : window.ArabicAbjad;

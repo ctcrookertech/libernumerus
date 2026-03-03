@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Digit reduction and number theory utilities
+ * Liber Numerus — Digit reduction and number theory utilities
  */
 const ReductionUtils = (() => {
 

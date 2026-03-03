@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Egyptian Numerology
+ * Liber Numerus — Egyptian Numerology
  * Number meanings, hieroglyphic numeral representation, ritual repetition analysis,
  * decan identification. Primarily a meaning-lookup system with no digit reduction.
  */

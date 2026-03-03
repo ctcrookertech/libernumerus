@@ -105,25 +105,56 @@ export default function PortalScreen() {
     <div style={{ padding: '20px 16px 80px', maxWidth: 600, margin: '0 auto' }}>
       {/* Header */}
       <div style={{ marginBottom: 24, textAlign: 'center' }}>
-        <h1 style={{
-          fontFamily: fonts.serif,
-          fontSize: 28,
-          fontWeight: 300,
-          color: C.gold,
-          letterSpacing: '3px',
-          textTransform: 'uppercase',
-          margin: '0 0 4px',
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 6,
+          marginBottom: 6,
         }}>
-          Libernumerus
-        </h1>
+          {/* Logo icon: inverted pentagon + 8-pointed star + inner triangle */}
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0, position: 'relative', top: 1 }}>
+            <polygon
+              points={[0,1,2,3,4].map(i => {
+                const a = (i * 72 + 90) * Math.PI / 180
+                return `${12 + 10.5 * Math.cos(a)},${12 + 10.5 * Math.sin(a)}`
+              }).join(' ')}
+              fill="none" stroke={C.gold} strokeWidth="1" opacity="0.9"
+            />
+            <rect x={6.5} y={6.5} width={11} height={11}
+              fill="none" stroke={C.gold} strokeWidth="0.8" opacity="0.9"
+            />
+            <rect x={6.5} y={6.5} width={11} height={11}
+              fill="none" stroke={C.gold} strokeWidth="0.8" opacity="0.9"
+              transform="rotate(45 12 12)"
+            />
+            <polygon
+              points="12,7 16.33,14.5 7.67,14.5"
+              fill={C.gold} fillOpacity="0.2" stroke={C.gold} strokeWidth="0.7" opacity="0.9"
+            />
+          </svg>
+          <h1 style={{
+            fontFamily: fonts.display,
+            fontSize: 18,
+            fontWeight: 700,
+            color: C.gold,
+            letterSpacing: '2px',
+            margin: 0,
+            textShadow: `0 0 12px rgba(245,230,190,0.5), 0 0 30px rgba(245,230,190,0.2)`,
+          }}>
+            Liber Numerus
+          </h1>
+        </div>
         <p style={{
-          fontFamily: fonts.serif,
-          fontSize: 12,
-          color: C.textMuted,
-          fontStyle: 'italic',
+          fontFamily: fonts.heading,
+          fontSize: 11,
+          fontWeight: 500,
+          color: C.goldDim,
+          opacity: 0.7,
+          letterSpacing: '1.5px',
           margin: 0,
         }}>
-          Eighteen traditions. One inquiry.
+          The Book of Numbers
         </p>
       </div>
 

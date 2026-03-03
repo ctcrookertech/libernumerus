@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Unicode utility functions
+ * Liber Numerus — Unicode utility functions
  * Script detection, character normalization, vowel/consonant classification
  */
 const UnicodeUtils = (() => {

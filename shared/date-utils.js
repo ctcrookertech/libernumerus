@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Date utility functions
+ * Liber Numerus — Date utility functions
  * Julian Day Number conversion, calendar conversions, lunisolar approximation
  */
 const DateUtils = (() => {

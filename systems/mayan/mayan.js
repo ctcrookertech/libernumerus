@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Mayan Numerology
+ * Liber Numerus — Mayan Numerology
  * Vigesimal conversion, Tzolkin, Haab, Long Count, Calendar Round, day-sign interpretation
  */
 const DateUtils = (typeof require !== 'undefined') ? require('../../shared/date-utils') : window.DateUtils;

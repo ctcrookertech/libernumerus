@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Pythagorean / Western Numerology
+ * Liber Numerus — Pythagorean / Western Numerology
  * Letter-mapping + digit-reduction system with Master Numbers and Karmic Debt
  */
 const ReductionUtils = (typeof require !== 'undefined') ? require('../../shared/reduction-utils') : window.ReductionUtils;

@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Vedic / Indian Numerology
+ * Liber Numerus — Vedic / Indian Numerology
  * Psychic, Destiny, Name Numbers; Katapayadi; Navagraha planetary system
  */
 const ReductionUtils = (typeof require !== 'undefined') ? require('../../shared/reduction-utils') : window.ReductionUtils;

@@ -1,6 +1,6 @@
 # testrun
 
-E2E test runner for the Libernumerus web app. Uses drivecdp to drive a headless Chrome browser through 10 core test scenarios.
+E2E test runner for the Liber Numerus web app. Uses drivecdp to drive a headless Chrome browser through 10 core test scenarios.
 
 ## Files
 
@@ -47,7 +47,7 @@ go run . -timeout 120s
 
 | # | Name | What it verifies |
 |---|------|-----------------|
-| 1 | `portal-loads` | App renders with "Libernumerus" heading, 5 tab buttons (Portal/Explore/Insights/Journal/Settings), NAME/DATE/NUMBER input mode buttons, and Evaluate button |
+| 1 | `portal-loads` | App renders with "Liber Numerus" heading, 5 tab buttons (Portal/Explore/Insights/Journal/Settings), NAME/DATE/NUMBER input mode buttons, and Evaluate button |
 | 2 | `name-evaluation` | Types "Pythagoras" into the name input, verifies real-time letter value indicators appear below each character, clicks Evaluate, verifies result cards render |
 | 3 | `date-evaluation` | Switches to DATE mode, sets date to 1990-06-15, clicks Evaluate, verifies a date-based result appears (Life Path, Expression, or Birth) |
 | 4 | `number-evaluation` | Switches to NUMBER mode, enters 7, clicks Evaluate, verifies meaningful result content appears |

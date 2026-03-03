@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Greek Isopsephy
+ * Liber Numerus — Greek Isopsephy
  * Classical Greek letter-number system with archaic numerals
  */
 const UnicodeUtils = (typeof require !== 'undefined') ? require('../../shared/unicode-utils') : window.UnicodeUtils;

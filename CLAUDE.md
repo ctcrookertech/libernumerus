@@ -1,4 +1,4 @@
-# Libernumerus
+# Liber Numerus
 
 Vanilla JavaScript library implementing 18 numerology traditions. No external dependencies. ES module + CommonJS dual export.
 

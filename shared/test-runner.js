@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Minimal assert-based test framework
+ * Liber Numerus — Minimal assert-based test framework
  * Works in both Node.js and browser environments
  */
 const TestRunner = (() => {

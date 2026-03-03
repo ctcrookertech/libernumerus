@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Neoplatonic Numerology
+ * Liber Numerus — Neoplatonic Numerology
  * Decad reduction, mathematical property analysis, Tetractys, ratio analysis
  */
 const ReductionUtils = (typeof require !== 'undefined') ? require('../../shared/reduction-utils') : window.ReductionUtils;

@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Yoruba / Ifá Numerology
+ * Liber Numerus — Yoruba / Ifá Numerology
  * Odù generation, Ikin/Opele methods, 256 composite figures, Orisha associations
  */
 const YorubaIfa = (() => {

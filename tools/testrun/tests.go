@@ -102,7 +102,7 @@ func testPortalLoads(ctx context.Context, page *browser.Page, baseURL string) er
 	}
 
 	// Check page title/heading
-	if err := expectText(ctx, page, "h1", "Libernumerus"); err != nil {
+	if err := expectText(ctx, page, "h1", "Liber Numerus"); err != nil {
 		return fmt.Errorf("heading: %w", err)
 	}
 

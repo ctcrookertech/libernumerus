@@ -68,8 +68,10 @@ export const glass = {
 
 export const fonts = {
   serif: "'Cormorant Garamond', 'Garamond', 'Georgia', serif",
+  display: "'Playfair Display', 'Cormorant Garamond', serif",
+  heading: "'Montserrat', sans-serif",
   mono: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
   system: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
-export const fontImport = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap"
+export const fontImport = "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@300;400;500&family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"

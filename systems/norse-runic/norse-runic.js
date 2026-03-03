@@ -1,5 +1,5 @@
 /**
- * Libernumerus — Norse Runic Numerology
+ * Liber Numerus — Norse Runic Numerology
  * Elder Futhark (24 runes), Younger Futhark (16), Anglo-Saxon Futhorc (33),
  * aett classification, aett cipher, runic name value, rune drawing
  */

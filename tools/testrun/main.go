@@ -1,4 +1,4 @@
-// testrun — E2E test runner for the Libernumerus web app.
+// testrun — E2E test runner for the Liber Numerus web app.
 //
 // Launches a headless browser, starts the Vite dev server, and runs
 // 10 core test cases covering navigation, input, evaluation, system

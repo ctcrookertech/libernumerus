@@ -20,7 +20,7 @@ export default function SettingsScreen() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `libernumerus-export-${Date.now()}.json`
+    a.download = `liber-numerus-export-${Date.now()}.json`
     a.click()
     URL.revokeObjectURL(url)
     setExportStatus('Exported successfully')
@@ -240,9 +240,9 @@ export default function SettingsScreen() {
         <div style={{
           fontFamily: fonts.serif, fontSize: 13, color: C.textDim, lineHeight: 1.7,
         }}>
-          <strong style={{ color: C.gold }}>Libernumerus</strong> — 18 numerology traditions
-          implemented in vanilla JavaScript. Pythagorean, Hebrew Gematria, Chaldean, Vedic,
-          Greek Isopsephy, Arabic Abjad, Hurufism, Thelemic, Tarot, Chinese Cosmological,
+          <strong style={{ color: C.gold }}>Liber Numerus: The Book of Numbers</strong> — 18 numerology
+          traditions implemented in vanilla JavaScript. Pythagorean, Hebrew Gematria, Chaldean,
+          Vedic, Greek Isopsephy, Arabic Abjad, Hurufism, Thelemic, Tarot, Chinese Cosmological,
           Japanese Shinto, Mayan, Yoruba Ifá, Norse Runic, Celtic Ogham, Neoplatonic,
           Christian Symbolic, and Egyptian.
         </div>
