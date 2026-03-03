@@ -1,13 +1,12 @@
 import { useRef, useEffect } from 'react'
-import { C } from '../utils/theme'
 
-const PARTICLE_COUNT = 60
-const GEOMETRY_OPACITY = 0.04
+const PARTICLE_COUNT = 30
+const CONNECTION_DISTANCE = 90
 
-export default function ParticleBackground() {
+/* ─── Particle Canvas with Constellation Lines ─── */
+function ParticleCanvas() {
   const canvasRef = useRef(null)
   const particles = useRef([])
-  const frame = useRef(0)
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -24,114 +23,59 @@ export default function ParticleBackground() {
       particles.current = Array.from({ length: PARTICLE_COUNT }, () => ({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
-        size: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.4 + 0.1,
-        hue: Math.random() > 0.5 ? 180 : 160, // cyan-green range
+        dx: (Math.random() - 0.5) * 0.105,
+        dy: (Math.random() - 0.5) * 0.105,
+        r: Math.random() * 1.5 + 0.3,
+        alpha: Math.random() * 0.4 + 0.15,
+        hue: Math.random() > 0.6 ? 160 : 180,
       }))
     }
 
-    function drawSacredGeometry(t) {
-      const cx = canvas.width / 2
-      const cy = canvas.height / 2
-      const r = Math.min(canvas.width, canvas.height) * 0.3
-
-      ctx.save()
-      ctx.translate(cx, cy)
-      ctx.rotate(t * 0.0001)
-      ctx.strokeStyle = `rgba(139, 92, 246, ${GEOMETRY_OPACITY})`
-      ctx.lineWidth = 0.5
-
-      // Metatron's Cube — 7 circles + connecting lines
-      const centers = [{ x: 0, y: 0 }]
-      for (let i = 0; i < 6; i++) {
-        const angle = (i * Math.PI * 2) / 6
-        centers.push({ x: Math.cos(angle) * r * 0.4, y: Math.sin(angle) * r * 0.4 })
-      }
-
-      // Draw circles
-      for (const c of centers) {
-        ctx.beginPath()
-        ctx.arc(c.x, c.y, r * 0.4, 0, Math.PI * 2)
-        ctx.stroke()
-      }
-
-      // Connecting lines between all centers
-      ctx.strokeStyle = `rgba(0, 229, 255, ${GEOMETRY_OPACITY * 0.5})`
-      for (let i = 0; i < centers.length; i++) {
-        for (let j = i + 1; j < centers.length; j++) {
-          ctx.beginPath()
-          ctx.moveTo(centers[i].x, centers[i].y)
-          ctx.lineTo(centers[j].x, centers[j].y)
-          ctx.stroke()
-        }
-      }
-
-      ctx.restore()
-    }
-
-    function animate(t) {
+    function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height)
-      frame.current = t
 
-      // Sacred geometry
-      drawSacredGeometry(t)
-
-      // Particles
-      for (const p of particles.current) {
-        p.x += p.vx
-        p.y += p.vy
-
-        // Wrap around
+      const pts = particles.current
+      for (const p of pts) {
+        p.x += p.dx
+        p.y += p.dy
         if (p.x < 0) p.x = canvas.width
         if (p.x > canvas.width) p.x = 0
         if (p.y < 0) p.y = canvas.height
         if (p.y > canvas.height) p.y = 0
 
-        // Slight parallax breathing
-        const breathe = Math.sin(t * 0.001 + p.x * 0.01) * 0.15
-
         ctx.beginPath()
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2)
-        ctx.fillStyle = `hsla(${p.hue}, 80%, 70%, ${p.opacity + breathe})`
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = `hsla(${p.hue},100%,60%,${p.alpha})`
         ctx.fill()
       }
 
-      // Blurred curves
-      ctx.save()
-      ctx.globalAlpha = 0.03
-      ctx.strokeStyle = C.cyan
-      ctx.lineWidth = 80
-      ctx.filter = 'blur(40px)'
-      ctx.beginPath()
-      ctx.moveTo(0, canvas.height * 0.6 + Math.sin(t * 0.0005) * 50)
-      ctx.quadraticCurveTo(
-        canvas.width * 0.5, canvas.height * 0.4 + Math.cos(t * 0.0003) * 80,
-        canvas.width, canvas.height * 0.7 + Math.sin(t * 0.0004) * 60
-      )
-      ctx.stroke()
-      ctx.strokeStyle = C.purple
-      ctx.beginPath()
-      ctx.moveTo(0, canvas.height * 0.3 + Math.cos(t * 0.0004) * 40)
-      ctx.quadraticCurveTo(
-        canvas.width * 0.5, canvas.height * 0.5 + Math.sin(t * 0.0006) * 60,
-        canvas.width, canvas.height * 0.4 + Math.cos(t * 0.0005) * 50
-      )
-      ctx.stroke()
-      ctx.restore()
+      // Constellation lines between nearby particles
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const a = pts[i], b = pts[j]
+          const dist = Math.hypot(a.x - b.x, a.y - b.y)
+          if (dist < CONNECTION_DISTANCE) {
+            ctx.beginPath()
+            ctx.moveTo(a.x, a.y)
+            ctx.lineTo(b.x, b.y)
+            ctx.strokeStyle = `rgba(0,229,255,${0.12 * (1 - dist / CONNECTION_DISTANCE)})`
+            ctx.stroke()
+          }
+        }
+      }
 
-      animId = requestAnimationFrame(animate)
+      animId = requestAnimationFrame(draw)
     }
 
     resize()
     initParticles()
-    animId = requestAnimationFrame(animate)
+    animId = requestAnimationFrame(draw)
 
-    window.addEventListener('resize', () => { resize(); initParticles() })
+    const onResize = () => { resize(); initParticles() }
+    window.addEventListener('resize', onResize)
     return () => {
       cancelAnimationFrame(animId)
-      window.removeEventListener('resize', resize)
+      window.removeEventListener('resize', onResize)
     }
   }, [])
 
@@ -140,13 +84,72 @@ export default function ParticleBackground() {
       ref={canvasRef}
       style={{
         position: 'fixed',
-        top: 0,
-        left: 0,
+        inset: 0,
         width: '100%',
         height: '100%',
-        zIndex: 0,
+        zIndex: 2,
         pointerEvents: 'none',
       }}
     />
+  )
+}
+
+/* ─── Metatron's Cube: 13 Fruit of Life circles + 78 lines + hexagram ─── */
+function SacredGeometry() {
+  const cx = 200, cy = 200, R = 48
+  const innerPts = [0,1,2,3,4,5].map(i => {
+    const a = (i * 60 - 90) * Math.PI / 180
+    return [cx + R * Math.cos(a), cy + R * Math.sin(a)]
+  })
+  const outerPts = [0,1,2,3,4,5].map(i => {
+    const a = (i * 60 - 90) * Math.PI / 180
+    return [cx + R * 2 * Math.cos(a), cy + R * 2 * Math.sin(a)]
+  })
+  const allPts = [[cx, cy], ...innerPts, ...outerPts]
+
+  return (
+    <svg viewBox="0 0 400 400" style={{
+      position: 'fixed',
+      inset: 0,
+      width: '100%',
+      height: '100%',
+      opacity: 0.07,
+      pointerEvents: 'none',
+      zIndex: 1,
+    }}>
+      {/* 78 connecting lines (13 choose 2) */}
+      {allPts.map((a, i) =>
+        allPts.slice(i + 1).map((b, j) => (
+          <line key={`l${i}-${j}`} x1={a[0]} y1={a[1]} x2={b[0]} y2={b[1]}
+            stroke="#c0b0ff" strokeWidth="0.5" opacity="0.7" />
+        ))
+      )}
+      {/* 13 Fruit of Life circles */}
+      {allPts.map(([x, y], i) => (
+        <circle key={`c${i}`} cx={x} cy={y} r={R * 0.95}
+          fill="none" stroke="#c0b0ff" strokeWidth="0.6" opacity="0.8" />
+      ))}
+      {/* Double bounding circles */}
+      <circle cx={cx} cy={cy} r={R * 3} fill="none" stroke="#c0b0ff" strokeWidth="0.5" opacity="0.5" />
+      <circle cx={cx} cy={cy} r={R * 3.2} fill="none" stroke="#c0b0ff" strokeWidth="0.35" opacity="0.3" />
+      {/* Hexagram (Star of David) */}
+      {[0, 1].map(offset => {
+        const pts = [0,1,2].map(i => {
+          const a = ((i * 120 + offset * 60) - 90) * Math.PI / 180
+          return `${cx + R * 2.2 * Math.cos(a)},${cy + R * 2.2 * Math.sin(a)}`
+        }).join(' ')
+        return <polygon key={`hex${offset}`} points={pts} fill="none" stroke="#c0b0ff" strokeWidth="0.55" opacity="0.6" />
+      })}
+    </svg>
+  )
+}
+
+/* ─── Combined Background ─── */
+export default function ParticleBackground() {
+  return (
+    <>
+      <SacredGeometry />
+      <ParticleCanvas />
+    </>
   )
 }
